@@ -2,21 +2,26 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 function App() {
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
   const [token, setToken] = useState('');
   const [message, setMessage] = useState('');
 
   const login = async () => {
     try {
       const response = await axios.post('http://localhost:8080/auth/login', {
-        username: 'airi',
-        password: 'password',
+        username,
+        password,
       });
       setToken(response.data.token);
       console.log('トークン取得成功:', response.data.token);
       // トークンをローカルストレージに保存
       localStorage.setItem('token', response.data.token);
       setToken(response.data.token);
+      setMessage('ログイン成功');
+      console.log('ログイン成功');
     } catch (error) {
+      setMessage('ログイン失敗');
       console.log('ログイン失敗:', error);
     }
   };
@@ -61,6 +66,20 @@ function App() {
         </>
       ) : (
         <>
+          <input
+            type="text"
+            placeholder="ID"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          ></input>
+          <br />
+          <input
+            type="password"
+            placeholder="パスワード"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
+          <br />
           <button onClick={login}>ログイン</button>
         </>
       )}
