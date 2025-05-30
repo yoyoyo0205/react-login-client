@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const [token, setToken] = useState('');
@@ -12,13 +12,16 @@ function App() {
         password: 'password',
       });
       setToken(response.data.token);
-      console.log('取得したトークン:', response.data.token);
+      console.log('トークン取得成功:', response.data.token);
+      // トークンをローカルストレージに保存
+      localStorage.setItem('token', response.data.token);
+      setToken(response.data.token);
     } catch (error) {
       console.log('ログイン失敗:', error);
     }
   };
 
-  const getHelloMessage = async () => {
+  const getAdminMessage = async () => {
     try {
       const response = await axios.get('http://localhost:8080/admin/hello', {
         headers: {
@@ -26,22 +29,41 @@ function App() {
         },
       });
       setMessage(response.data);
+      console.log('管理者メッセージ:', response.data);
     } catch (error) {
-      console.error('hello API 呼び出し失敗:', error);
+      console.error('メッセージ取得失敗:', error);
       setMessage('API呼び出しに失敗しました。');
     }
+  };
+  // useEffectで初回読み込み時にトークンを復元
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      setToken(savedToken);
+    }
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setToken('');
+    setMessage('');
   };
 
   return (
     <div>
-      <h1>JWT Login Test</h1>
-      <button onClick={login}>ログイン</button>
-      <p>Token: {token}</p>
+      <h1>ログイン画面</h1>
 
-      <button onClick={getHelloMessage} disabled={!token}>
-        トークンで /auth/hello 呼び出し
-      </button>
-      <p>メッセージ：{message}</p>
+      {token ? (
+        <>
+          <button onClick={getAdminMessage}>管理者メッセージ取得</button>
+          <p>{message}</p>
+          <button onClick={logout}>ログアウト</button>
+        </>
+      ) : (
+        <>
+          <button onClick={login}>ログイン</button>
+        </>
+      )}
     </div>
   );
 }
