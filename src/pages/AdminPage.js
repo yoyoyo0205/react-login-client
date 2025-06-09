@@ -7,7 +7,7 @@ const AdminPage = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/admin/helllo', {
+        const response = await axios.get('http://localhost:8080/admin/hello', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
