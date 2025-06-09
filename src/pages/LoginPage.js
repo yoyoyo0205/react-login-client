@@ -6,6 +6,7 @@ import '../css/LoginPage.css';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
   const login = async () => {
@@ -16,15 +17,18 @@ const LoginPage = () => {
       });
       const token = response.data.token;
       localStorage.setItem('token', token);
-      navigate('/admin');
+      if (token) {
+        navigate('/admin');
+      }
     } catch (error) {
-      alert('ログイン失敗');
+      setErrorMsg('ログインに失敗しました。ユーザー名またはパスワードが間違っています。');
     }
   };
 
   return (
     <div className="login-container">
       <h2>ログインページ</h2>
+      {errorMsg && <p className="error-msg">{errorMsg}</p>}
       <div className="form-group">
         <input
           type="text"
