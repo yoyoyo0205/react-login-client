@@ -9,6 +9,18 @@ const LoginPage = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!username || !password) {
+      setErrorMsg('ユーザーIDとパスワードを両方入力してください。');
+      return;
+    }
+
+    // バリデーション通過時のみログイン処理
+    await login();
+  };
+
   const login = async () => {
     try {
       const response = await axios.post('http://localhost:8080/auth/login', {
@@ -45,7 +57,7 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button onClick={login}>ログイン</button>
+      <button onClick={handleSubmit}>ログイン</button>
     </div>
   );
 };
