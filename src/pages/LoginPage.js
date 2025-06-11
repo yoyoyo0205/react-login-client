@@ -33,7 +33,7 @@ const LoginPage = () => {
         navigate('/admin');
       }
     } catch (error) {
-      setErrorMsg('ログインに失敗しました。ユーザー名またはパスワードが間違っています。');
+      setErrorMsg('ログインに失敗しました。\nユーザー名またはパスワードが間違っています。');
     }
   };
 
