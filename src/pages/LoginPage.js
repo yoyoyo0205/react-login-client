@@ -16,8 +16,6 @@ const LoginPage = () => {
       setErrorMsg('ユーザーIDとパスワードを両方入力してください。');
       return;
     }
-
-    // バリデーション通過時のみログイン処理
     await login();
   };
 
@@ -35,6 +33,10 @@ const LoginPage = () => {
     } catch (error) {
       setErrorMsg('ログインに失敗しました。\nユーザー名またはパスワードが間違っています。');
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   };
 
   return (
@@ -58,6 +60,10 @@ const LoginPage = () => {
         />
       </div>
       <button onClick={handleSubmit}>ログイン</button>
+
+      <hr style={{ margin: '20px 0' }} />
+
+      <button onClick={handleGoogleLogin}>Googleログイン</button>
     </div>
   );
 };

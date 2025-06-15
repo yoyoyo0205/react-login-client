@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import AdminPage from './pages/AdminPage';
 import PrivateRoute from './components/PrivateRoute';
+import OAuthSuccess from './pages/OAuthSuccess';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
       </Routes>
     </BrowserRouter>
   );
